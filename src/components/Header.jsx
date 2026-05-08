@@ -7,7 +7,7 @@ export default function Header() {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container">
           <NavLink className="navbar-brand fw-bold" to="/">
-            GameVault
+            Ludexira
           </NavLink>
 
           <div className="d-flex gap-3">
