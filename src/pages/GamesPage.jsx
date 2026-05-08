@@ -4,6 +4,7 @@ import useGames from "../hooks/useGames";
 export default function GamesPage() {
   const { games, isLoading, error } = useGames();
 
+  
   if (isLoading) {
     return <p>Loading games...</p>;
   }
