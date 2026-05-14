@@ -29,11 +29,6 @@ export default function useCompare() {
       return;
     }
 
-    if (compareGames.length >= 2) {
-      alert("You can compare only 2 games at a time.");
-      return;
-    }
-
     saveCompareGames([...compareGames, game]);
   }
 

@@ -19,7 +19,7 @@ export default function ComparePage() {
       <div className="mb-4">
         <h1>Compare</h1>
         <p className="text-secondary">
-          Select 2 games from the games list and compare their details.
+          Select at least 2 games from the games list and compare their details.
         </p>
       </div>
 
@@ -45,7 +45,7 @@ export default function ComparePage() {
         </div>
       )}
 
-      {gamesDetails.length === 2 && (
+      {gamesDetails.length >= 2 && (
         <>
           <div className="mb-3 d-flex gap-2">
             <button
