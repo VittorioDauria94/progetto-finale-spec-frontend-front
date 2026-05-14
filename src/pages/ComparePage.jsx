@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import useCompare from "../hooks/useCompare";
+import { useGlobalContext } from "../context/GlobalContext";
 import useGames from "../hooks/useGames";
 
 export default function ComparePage() {
-  const { compareGames, removeCompare, clearCompare } = useCompare();
+  const { compareGames, removeCompare, clearCompare } = useGlobalContext();
   const { gamesDetails, isLoading, error } = useGames(compareGames);
 
   if (isLoading) {

@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import useGames from "../hooks/useGames";
 import { useCallback, useState } from "react";
-import useFavorites from "../hooks/useFavorites";
-import useCompare from "../hooks/useCompare";
 import { debounce } from "../utils/debounce";
+import { useGlobalContext } from "../context/GlobalContext";
 
 export default function GamesPage() {
   const { games, isLoading, error } = useGames();
@@ -11,8 +10,8 @@ export default function GamesPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortBy, setSortBy] = useState("title");
   const [sortOrder, setSortOrder] = useState(1);
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const { isInCompare, toggleCompare } = useCompare();
+  const { isFavorite, toggleFavorite, isInCompare, toggleCompare } =
+    useGlobalContext();
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 

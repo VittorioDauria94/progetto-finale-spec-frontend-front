@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import useFavorites from "../hooks/useFavorites";
+import { useGlobalContext } from "../context/GlobalContext";
 
 export default function FavoritesPage() {
-  const { favorites, removeFavorite } = useFavorites();
+  const { favorites, removeFavorite } = useGlobalContext();
 
   return (
     <section>
