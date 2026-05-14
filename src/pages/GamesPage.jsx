@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import useGames from "../hooks/useGames";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { debounce } from "../utils/debounce";
 import { useGlobalContext } from "../context/GlobalContext";
+import GamesTable from "../components/GamesTable";
 
 export default function GamesPage() {
   const { games, isLoading, error } = useGames();
@@ -15,7 +15,9 @@ export default function GamesPage() {
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const categories = [...new Set(games.map((game) => game.category))];
+  const categories = useMemo(() => {
+    return [...new Set(games.map((game) => game.category))];
+  }, [games]);
 
   const handleSearch = useCallback(
     debounce(function (value) {
@@ -24,27 +26,44 @@ export default function GamesPage() {
     [],
   );
 
-  function handleSort(field) {
-    if (sortBy === field) {
-      setSortOrder((prev) => prev * -1);
-    } else {
-      setSortBy(field);
-      setSortOrder(1);
-    }
-  }
+  const handleSort = useCallback(
+    function handleSort(field) {
+      if (sortBy === field) {
+        setSortOrder((prev) => prev * -1);
+      } else {
+        setSortBy(field);
+        setSortOrder(1);
+      }
+    },
+    [sortBy],
+  );
 
-  const filteredGames = games.filter((game) => {
-    const matchesSearch = game.title.toLowerCase().includes(searchQuery);
+  const filteredGames = useMemo(() => {
+    return games.filter((game) => {
+      const matchesSearch = game.title.toLowerCase().includes(searchQuery);
 
-    const matchesCategory =
-      selectedCategory === "" || game.category === selectedCategory;
+      const matchesCategory =
+        selectedCategory === "" || game.category === selectedCategory;
 
-    return matchesSearch && matchesCategory;
-  });
+      return matchesSearch && matchesCategory;
+    });
+  }, [games, searchQuery, selectedCategory]);
 
-  const sortedGames = [...filteredGames].sort((a, b) => {
-    return a[sortBy].localeCompare(b[sortBy]) * sortOrder;
-  });
+  const sortedGames = useMemo(() => {
+    return [...filteredGames].sort((a, b) => {
+      return a[sortBy].localeCompare(b[sortBy]) * sortOrder;
+    });
+  }, [filteredGames, sortBy, sortOrder]);
+
+  const handleSearchInputChange = useCallback(
+    function handleSearchInputChange(e) {
+      const value = e.target.value;
+
+      setSearchInput(value);
+      handleSearch(value);
+    },
+    [handleSearch],
+  );
 
   if (isLoading) {
     return <p>Loading games...</p>;
@@ -74,10 +93,7 @@ export default function GamesPage() {
           placeholder="Search by title"
           aria-label="Search"
           value={searchInput}
-          onChange={(e) => {
-            setSearchInput(e.target.value);
-            handleSearch(e.target.value);
-          }}
+          onChange={handleSearchInputChange}
         />
 
         <select
@@ -100,82 +116,16 @@ export default function GamesPage() {
       {sortedGames.length === 0 ? (
         <p className="text-secondary">No games found.</p>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-striped table-hover align-middle">
-            <thead>
-              <tr>
-                <th>
-                  <button
-                    className="btn btn-link p-0 text-decoration-none fw-bold"
-                    type="button"
-                    onClick={() => handleSort("title")}
-                  >
-                    Title{" "}
-                    {sortBy === "title" && (sortOrder === 1 ? "A-Z" : "Z-A")}
-                  </button>
-                </th>
-
-                <th>
-                  <button
-                    className="btn btn-link p-0 text-decoration-none fw-bold"
-                    type="button"
-                    onClick={() => handleSort("category")}
-                  >
-                    Category{" "}
-                    {sortBy === "category" && (sortOrder === 1 ? "A-Z" : "Z-A")}
-                  </button>
-                </th>
-
-                <th>Actions</th>
-                <th>Favorite</th>
-                <th>Compare</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {sortedGames.map((game) => (
-                <tr key={game.id}>
-                  <td>{game.title}</td>
-                  <td>{game.category}</td>
-                  <td>
-                    <Link
-                      className="btn btn-primary btn-sm"
-                      to={`/games/${game.id}`}
-                    >
-                      Details
-                    </Link>
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className={`btn btn-sm ${
-                        isFavorite(game.id)
-                          ? "btn-warning"
-                          : "btn-outline-warning"
-                      }`}
-                      onClick={() => toggleFavorite(game)}
-                    >
-                      {isFavorite(game.id) ? "★" : "☆"}
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className={`btn btn-sm ${
-                        isInCompare(game.id)
-                          ? "btn-success"
-                          : "btn-outline-success"
-                      }`}
-                      onClick={() => toggleCompare(game)}
-                    >
-                      {isInCompare(game.id) ? "Added" : "Compare"}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <GamesTable
+          games={sortedGames}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onSort={handleSort}
+          isFavorite={isFavorite}
+          toggleFavorite={toggleFavorite}
+          isInCompare={isInCompare}
+          toggleCompare={toggleCompare}
+        />
       )}
     </section>
   );
