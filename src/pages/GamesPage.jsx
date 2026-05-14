@@ -1,20 +1,29 @@
 import { Link } from "react-router-dom";
 import useGames from "../hooks/useGames";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import useFavorites from "../hooks/useFavorites";
 import useCompare from "../hooks/useCompare";
+import { debounce } from "../utils/debounce";
 
 export default function GamesPage() {
   const { games, isLoading, error } = useGames();
 
-  const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortBy, setSortBy] = useState("title");
   const [sortOrder, setSortOrder] = useState(1);
   const { isFavorite, toggleFavorite } = useFavorites();
   const { isInCompare, toggleCompare } = useCompare();
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const categories = [...new Set(games.map((game) => game.category))];
+
+  const handleSearch = useCallback(
+    debounce(function (value) {
+      setSearchQuery(value.trim().toLowerCase());
+    }, 500),
+    [],
+  );
 
   function handleSort(field) {
     if (sortBy === field) {
@@ -26,9 +35,7 @@ export default function GamesPage() {
   }
 
   const filteredGames = games.filter((game) => {
-    const matchesSearch = game.title
-      .toLowerCase()
-      .includes(search.trim().toLowerCase());
+    const matchesSearch = game.title.toLowerCase().includes(searchQuery);
 
     const matchesCategory =
       selectedCategory === "" || game.category === selectedCategory;
@@ -67,8 +74,11 @@ export default function GamesPage() {
           type="search"
           placeholder="Search by title"
           aria-label="Search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={searchInput}
+          onChange={(e) => {
+            setSearchInput(e.target.value);
+            handleSearch(e.target.value);
+          }}
         />
 
         <select
