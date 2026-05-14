@@ -5,7 +5,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import ComparePage from "./pages/ComparePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import DefaultLayout from "./layout/DefaultLayout";
-import HomePage from "./pages/Homepage";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
