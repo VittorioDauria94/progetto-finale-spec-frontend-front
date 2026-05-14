@@ -10,10 +10,10 @@ export default memo(function GamesTable({
   toggleFavorite,
   isInCompare,
   toggleCompare,
-}) { 
+}) {
   return (
     <div className="table-responsive">
-      <table className="table table-striped table-hover align-middle">
+      <table className="table table-striped table-hover align-middle app-table mb-0">
         <thead>
           <tr>
             <th>
@@ -29,7 +29,7 @@ export default memo(function GamesTable({
             <th>
               <button
                 type="button"
-                className="btn btn-link p-0 text-decoration-none fw-bold"
+                className="btn btn-link p-0 text-decoration-none fw-bold app-sort-btn"
                 onClick={() => onSort("category")}
               >
                 Category{" "}
@@ -37,9 +37,15 @@ export default memo(function GamesTable({
               </button>
             </th>
 
-            <th>Favorite</th>
-            <th>Compare</th>
-            <th>Actions</th>
+            <th className="text-center" style={{ width: "100px" }}>
+              Favorite
+            </th>
+            <th className="text-center" style={{ width: "130px" }}>
+              Compare
+            </th>
+            <th className="text-end" style={{ width: "100px" }}>
+              Actions
+            </th>
           </tr>
         </thead>
 

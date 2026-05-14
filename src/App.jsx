@@ -7,11 +7,13 @@ import NotFoundPage from "./pages/NotFoundPage";
 import DefaultLayout from "./layout/DefaultLayout";
 import HomePage from "./pages/HomePage";
 import { GlobalProvider } from "./context/GlobalContext";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <GlobalProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<HomePage />} />

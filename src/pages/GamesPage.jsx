@@ -76,8 +76,11 @@ export default function GamesPage() {
   return (
     <section>
       <div className="mb-4">
-        <h1>Games</h1>
-        <p className="text-secondary">
+        <span className="hero-badge mb-3">Game Library</span>
+
+        <h1 className="app-section-title display-5">Games</h1>
+
+        <p className="app-section-subtitle">
           Browse, search and compare your favorite videogames.
         </p>
       </div>
@@ -88,7 +91,7 @@ export default function GamesPage() {
         onSubmit={(e) => e.preventDefault()}
       >
         <input
-          className="form-control"
+          className="form-control app-input"
           type="search"
           placeholder="Search by title"
           aria-label="Search"
@@ -99,7 +102,7 @@ export default function GamesPage() {
         <select
           name="category"
           id="category"
-          className="form-select"
+          className="form-select app-select"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >

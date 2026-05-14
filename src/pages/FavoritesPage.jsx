@@ -8,21 +8,21 @@ export default function FavoritesPage() {
     <section>
       <div className="mb-4">
         <h1>Favorites</h1>
-        <p className="text-secondary">Your favorite games.</p>
+        <p className="app-section-subtitle">Your favorite games.</p>
       </div>
 
       {favorites.length === 0 && (
-        <p className="text-secondary">You have no favorite games yet.</p>
+        <p className="app-section-subtitle">You have no favorite games yet.</p>
       )}
 
       <div className="row g-4">
         {favorites.map((game) => (
           <div key={game.id} className="col-12 col-md-6 col-lg-4">
-            <div className="card h-100">
+            <div className="app-card h-100 p-3">
               <div className="card-body">
                 <h5 className="card-title">{game.title}</h5>
 
-                <p className="card-text text-secondary">{game.category}</p>
+                <p className="card-text app-card-muted">{game.category}</p>
 
                 <div className="d-flex gap-2">
                   <Link

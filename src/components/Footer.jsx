@@ -1,8 +1,9 @@
 export default function Footer() {
   return (
-    <footer className="border-top py-3 mt-5">
-      <div className="container text-center text-secondary">
-        <small>Ludexira - Final React Project</small>
+    <footer className="app-footer py-4 mt-5">
+      <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <small>© 2026 Ludexira</small>
+        <small>Browse, save and compare your favorite videogames.</small>
       </div>
     </footer>
   );

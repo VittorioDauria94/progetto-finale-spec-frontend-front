@@ -11,6 +11,7 @@ export default function useGames(compareGames = null) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [gamesDetails, setGamesDetails] = useState([]);
+  const [notFound, setNotFound] = useState(false);
 
   // GET games
   async function getGames() {
@@ -38,9 +39,16 @@ export default function useGames(compareGames = null) {
   async function getGame() {
     setIsLoading(true);
     setError("");
+    setNotFound(false);
 
     try {
       const resp = await fetch(`${API_URL}/games/${id}`);
+
+      if (resp.status === 404) {
+        setGame(null);
+        setNotFound(true);
+        return;
+      }
 
       if (!resp.ok) {
         throw new Error("Errore nel caricamento del gioco");
@@ -103,5 +111,6 @@ export default function useGames(compareGames = null) {
     gamesDetails,
     isLoading,
     error,
+    notFound,
   };
 }
