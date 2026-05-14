@@ -22,7 +22,7 @@ export default function useGames(compareGames = null) {
       const resp = await fetch(`${API_URL}/games`);
 
       if (!resp.ok) {
-        throw new Error("Errore nel caricamento dei giochi");
+        throw new Error("Failed to load games");
       }
 
       const data = await resp.json();
@@ -51,7 +51,7 @@ export default function useGames(compareGames = null) {
       }
 
       if (!resp.ok) {
-        throw new Error("Errore nel caricamento del gioco");
+        throw new Error("Failed to load game");
       }
 
       const data = await resp.json();
@@ -77,7 +77,7 @@ export default function useGames(compareGames = null) {
       const responses = await Promise.all(requests);
 
       if (responses.some((resp) => !resp.ok)) {
-        throw new Error("Errore nel caricamento dei giochi da confrontare");
+        throw new Error("Failed to load games comparison");
       }
 
       const data = await Promise.all(responses.map((resp) => resp.json()));

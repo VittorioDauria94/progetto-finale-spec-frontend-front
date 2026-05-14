@@ -19,7 +19,7 @@ export default memo(function GamesTable({
             <th>
               <button
                 type="button"
-                className="btn btn-link p-0 text-decoration-none fw-bold"
+                className="btn btn-link p-0 text-decoration-none fw-bold app-sort-btn"
                 onClick={() => onSort("title")}
               >
                 Title {sortBy === "title" && (sortOrder === 1 ? "A-Z" : "Z-A")}
